@@ -1,0 +1,26 @@
+{
+  "name": "ReduxChess",
+  "version": "0.0.1",
+  "description": "A simple browser chess game with React and Redux based on the Stockfish engine.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node_modules/.bin/webpack",
+    "start": "npm run build && http-server -a localhost -p 8000"
+  },
+  "author": "Christoph Baudson",
+  "license": "",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-react": "^6.24.1",
+    "http-server": "^0.9.0",
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "react-chessdiagram": "^1.3.1",
+    "redux": "^3.6.0"
+  }
+}
