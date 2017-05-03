@@ -1,31 +1,18 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';	
-import ChessApp from 'Modules/ChessApp';
-import { createStore } from 'redux'
+import ReactDOM from 'react-dom';
+import ReactChess from 'Modules/ReactChess';
 
-const chessboard = document.createElement("div");
-chessboard.setAttribute("id", "chessboard");
-document.body.appendChild(chessboard);
+const container = document.createElement("div");
+container.setAttribute("id", "chessboard");
+document.body.appendChild(container);
 
-const stockfish = new Worker('stockfish.js');
-console.log(stockfish);
+const board = <ReactChess />;
+ReactDOM.render(board, container);
 
-stockfish.onmessage = function(event) {
-    //NOTE: Web Workers wrap the response in an object.
-    console.log(event.data ? event.data : event);
-};
-//stockfish.postMessage("go depth 15");
+// const stockfish = new Worker('stockfish.js');
+// stockfish.onmessage = function(event) {
+//     //NOTE: Web Workers wrap the response in an object.
+//     console.log(event.data ? event.data : event);
+// };
 
-const state = function(state = {}, action = '') {
-  return {
-    position:  'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-  };
-};
-
-const store = createStore(state);
-
-const ChessDiagram = <ChessApp/>;
-ReactDOM.render(
-	ChessDiagram,
-	chessboard
-);
+//let chessEngine = new ChessEngine(stockfish);
