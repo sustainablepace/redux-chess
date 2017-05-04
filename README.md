@@ -1,5 +1,9 @@
 # Playing around with Redux, React and Webpack2 #
 
+## Demo ##
+
+http://chess.baudson.de
+
 ## Simple Webpack2 config ##
 
 Getting started https://webpack.js.org/guides/get-started/
