@@ -10,8 +10,7 @@ const ReduxChess = (state, action) => {
         game.move(action.move);
     }
     return {
-        fen: game.fen(),
-        allowMoves: true
+        fen: game.fen()
     };
 };
 

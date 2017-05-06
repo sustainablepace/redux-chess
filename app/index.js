@@ -13,25 +13,7 @@ document.body.appendChild(container);
 
 const store = createStore(ReduxChess);
 
-// const WHITE = 'w';
-// const BLACK = 'b';
-//
-// let players = {};
-// players[WHITE] = null;
-// players[BLACK] = null;
-// players[WHITE] = new PlayerRandom({
-//     store: store,
-//     pieceColor: WHITE
-// });
-// players[BLACK] = new PlayerHuman({
-//     store: store,
-//     pieceColor: BLACK
-// });
-
-
 ReactDOM.render(
-    <Provider store={store}>
-        <ReactChess />
-    </Provider>,
+    <ReactChess w="human" b="computer" store={store} />,
     container
 );
