@@ -4,7 +4,7 @@ import ReactChess from 'Modules/ReactChess';
 import { Provider } from 'react-redux';
 import ReduxChess from 'Modules/ReduxChess';
 import { createStore } from 'redux'
-import PlayerRandom from 'Modules/PlayerRandom';
+import PlayerComputer from 'Modules/PlayerComputer';
 import PlayerHuman from 'Modules/PlayerHuman';
 
 const container = document.createElement("div");
@@ -13,7 +13,11 @@ document.body.appendChild(container);
 
 const store = createStore(ReduxChess);
 
+// const black = new PlayerHuman();
+const black = new PlayerComputer();
+const white = new PlayerComputer();
+
 ReactDOM.render(
-    <ReactChess w="human" b="computer" store={store} />,
+    <ReactChess w={white} b={black} store={store} />,
     container
 );

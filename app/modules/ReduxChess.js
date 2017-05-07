@@ -1,10 +1,9 @@
 import Chess from 'chess.js';
 
 const ReduxChess = (state, action) => {
-    const fen = state && state.fen;
     const game = new Chess();
-    if (fen) {
-        game.load(fen);
+    if (state && state.fen) {
+        game.load(state.fen);
     }
     if (action.move) {
         game.move(action.move);
