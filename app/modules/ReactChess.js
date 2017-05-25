@@ -8,7 +8,7 @@ import PlayerHuman from 'Modules/PlayerHuman';
 class ReactChessPlayers extends React.Component {
 
     onMovePiece(piece, from, to) {
-        const game = new Chess(this.props.fen);
+        const game = new Chess(this.fen);
         if(this[game.turn()] instanceof PlayerHuman) {
             this.onHumanTurn(game.fen(), from, to);
         }
