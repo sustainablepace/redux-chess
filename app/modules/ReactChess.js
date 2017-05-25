@@ -7,20 +7,6 @@ import PlayerHuman from 'Modules/PlayerHuman';
 
 class ReactChessPlayers extends React.Component {
 
-    componentWillMount() {
-        this.props.store.subscribe(() => {
-            const game = new Chess(this.props.store.getState().fen);
-            if(this.props[game.turn()] instanceof PlayerComputer) {
-                setTimeout(() => {
-                    this.props.onComputerTurn(game.fen());
-                }, 100)
-            }
-        });
-        this.props.store.dispatch({
-            type: 'init'
-        });
-    }
-
     onMovePiece(piece, from, to) {
         const game = new Chess(this.store.getState().fen);
         if(this[game.turn()] instanceof PlayerHuman) {
@@ -29,6 +15,12 @@ class ReactChessPlayers extends React.Component {
     }
 
     render() {
+        const game = new Chess(this.props.store.getState().fen);
+        if(this.props[game.turn()] instanceof PlayerComputer) {
+            setTimeout(() => {
+                this.props.onComputerTurn(game.fen());
+            }, 200)
+        }
         return <Chessdiagram squareSize={90} onMovePiece={this.onMovePiece} {...this.props}/>
     }
 }
@@ -56,7 +48,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 const computerPlayer = ownProps[game.turn()];
                 setTimeout(() => {
                     computerPlayer.move(dispatch, fen);
-                }, 100);
+                }, 200);
             }
         }
     }

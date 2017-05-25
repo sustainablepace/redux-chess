@@ -11,10 +11,13 @@ const container = document.createElement("div");
 container.setAttribute("id", "chessboard");
 document.body.appendChild(container);
 
-const store = createStore(ReduxChess);
+const store = createStore(
+    ReduxChess,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-// const black = new PlayerHuman();
-const black = new PlayerComputer();
+const black = new PlayerHuman();
+//const black = new PlayerComputer();
 const white = new PlayerComputer();
 
 ReactDOM.render(
