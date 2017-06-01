@@ -1,55 +1,56 @@
 import React, {Component} from 'react';
 import Chessdiagram from 'react-chessdiagram';
 import { connect } from 'react-redux';
-import Chess from 'chess.js';
 import PlayerComputer from 'Modules/PlayerComputer';
 import PlayerHuman from 'Modules/PlayerHuman';
 
-class ReactChessPlayers extends React.Component {
+class ReactChessGame extends React.Component {
 
-    onMovePiece(piece, from, to) {
-        const game = new Chess(this.fen);
-        if(this[game.turn()] instanceof PlayerHuman) {
-            this.onHumanTurn(game.fen(), from, to);
+    humanMove(piece, from, to) {
+        if(!this.isGameOver && this.allowMoves) {
+            this.onHumanTurn(this.currentPlayer, from, to);
         }
+    }
+
+    computerMove() {
+        if(!this.isGameOver && !this.allowMoves) {
+            setTimeout(() => {
+                this.onComputerTurn(this.currentPlayer, this.fen);
+            }, 100)
+        }
+    }
+
+    componentDidMount() {
+        this.computerMove.call(this.props)
+    }
+
+    componentDidUpdate() {
+        this.computerMove.call(this.props)
     }
 
     render() {
-        const game = new Chess(this.props.fen);
-        if(this.props[game.turn()] instanceof PlayerComputer) {
-            setTimeout(() => {
-                this.props.onComputerTurn(game.fen());
-            }, 200)
-        }
-        return <Chessdiagram squareSize={90} onMovePiece={this.onMovePiece} {...this.props}/>
+        return <Chessdiagram onMovePiece={this.humanMove} {...this.props}/>
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    const game = new Chess(state.fen);
+const mapStateToProps = (state) => {
     return {
-        fen: game.fen(),
-        allowMoves: ownProps[game.turn()] instanceof PlayerHuman
+        fen: state.fen,
+        turn: state.turn,
+        isGameOver: state.isGameOver,
+        currentPlayer: state[state.turn],
+        allowMoves: state[state.turn] instanceof PlayerHuman,
+        squareSize: 90
     }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        onHumanTurn: (fen, from, to) => {
-            const game = new Chess(fen);
-            if (!game.game_over()) {
-                const humanPlayer = ownProps[game.turn()];
-                humanPlayer.move(dispatch, fen, from, to);
-            }
+        onHumanTurn: (humanPlayer, from, to) => {
+            humanPlayer.move(dispatch, from, to);
         },
-        onComputerTurn: (fen) => {
-            const game = new Chess(fen);
-            if (!game.game_over()) {
-                const computerPlayer = ownProps[game.turn()];
-                setTimeout(() => {
-                    computerPlayer.move(dispatch, fen);
-                }, 200);
-            }
+        onComputerTurn: (computerPlayer, fen) => {
+            computerPlayer.move(dispatch, fen);
         }
     }
 };
@@ -57,6 +58,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const ReactChess = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ReactChessPlayers);
+)(ReactChessGame);
 
 export default ReactChess;
