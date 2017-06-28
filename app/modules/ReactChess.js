@@ -3,7 +3,7 @@ import Chessdiagram from 'react-chessdiagram';
 import { connect } from 'react-redux';
 import PlayerHuman from 'Modules/PlayerHuman';
 
-class ReactChessGame extends React.Component {
+class ReactChessContainer extends React.Component { // Container component
 
     humanMove(piece, from, to) { // Command handler
         if(!this.isGameOver && this.allowMoves) {
@@ -27,7 +27,7 @@ class ReactChessGame extends React.Component {
         this.computerMove.call(this.props)
     }
 
-    render() {
+    render() { // Presentational component
         return <Chessdiagram onMovePiece={this.humanMove} {...this.props}/>
     }
 }
@@ -62,4 +62,4 @@ const commandModel = (dispatch) => { // in react-redux: mapDispatchToProps
     }
 };
 
-export default connect(queryModel, commandModel)(ReactChessGame);
+export default connect(queryModel, commandModel)(ReactChessContainer);
