@@ -1,18 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactChess from 'Modules/ReactChess';
 import ReduxChess from 'Modules/ReduxChess';
 import { createStore } from 'redux'
-import PlayerComputer from 'Modules/PlayerComputer';
-import PlayerHuman from 'Modules/PlayerHuman';
+import { Provider } from 'react-redux';
 
-const store = createStore(ReduxChess, {
-    b: new PlayerHuman(),
-    // b: new PlayerComputer(),
-    w: new PlayerComputer()
-});
+const store = createStore(ReduxChess, {});
 
 ReactDOM.render(
-    <ReactChess store={store} />,
+    <Provider store={store}>
+        <ReactChess/>
+    </Provider>,
     document.getElementById('chessboard')
 );
