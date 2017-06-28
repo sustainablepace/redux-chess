@@ -1,21 +1,20 @@
 import React, {Component} from 'react';
 import Chessdiagram from 'react-chessdiagram';
 import { connect } from 'react-redux';
-import PlayerComputer from 'Modules/PlayerComputer';
 import PlayerHuman from 'Modules/PlayerHuman';
 
 class ReactChessGame extends React.Component {
 
-    humanMove(piece, from, to) {
+    humanMove(piece, from, to) { // Command handler
         if(!this.isGameOver && this.allowMoves) {
-            this.onHumanTurn(this.currentPlayer, from, to);
+            this.movePieceOnHumanTurn(this.currentPlayer, this.fen, from, to);
         }
     }
 
-    computerMove() {
+    computerMove() { // Command handler
         if(!this.isGameOver && !this.allowMoves) {
             setTimeout(() => {
-                this.onComputerTurn(this.currentPlayer, this.fen);
+                this.movePieceOnComputerTurn(this.currentPlayer, this.fen);
             }, 100)
         }
     }
@@ -33,7 +32,7 @@ class ReactChessGame extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const queryModel = (state) => { // in react-redux: mapStateToProps
     return {
         fen: state.fen,
         turn: state.turn,
@@ -44,20 +43,23 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
+const commandModel = (dispatch) => { // in react-redux: mapDispatchToProps
     return {
-        onHumanTurn: (humanPlayer, from, to) => {
-            humanPlayer.move(dispatch, from, to);
+        movePieceOnHumanTurn: (humanPlayer, fen, from, to) => {
+            let domainEvent = humanPlayer.createAction(from, to);
+            if(domainEvent !== null && domainEvent.type === "pieceMoved" && domainEvent.move) {
+                dispatch(domainEvent) // Flux = Dispatcher
+            }
+            // void
         },
-        onComputerTurn: (computerPlayer, fen) => {
-            computerPlayer.move(dispatch, fen);
+        movePieceOnComputerTurn: (computerPlayer, fen) => {
+            let domainEvent = computerPlayer.createAction(fen);
+            if(domainEvent !== null && domainEvent.type === "pieceMoved" && domainEvent.move) {
+                dispatch(domainEvent) // Flux = Dispatcher
+            }
+            // void
         }
     }
 };
 
-const ReactChess = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ReactChessGame);
-
-export default ReactChess;
+export default connect(queryModel, commandModel)(ReactChessGame);

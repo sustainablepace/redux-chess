@@ -1,9 +1,10 @@
 import Chess from 'chess.js';
 
-const ReduxChess = (state, action) => {
+// CQRS = EventSubscriber, Flux = Store
+export default (state, domainEvent) => {
     const game = new Chess(state.fen);
-    if (action.move) {
-        game.move(action.move);
+    if (domainEvent.type === "pieceMoved" && domainEvent.move) {
+        game.move(domainEvent.move);
     }
     return {
         fen: game.fen(),
@@ -13,5 +14,3 @@ const ReduxChess = (state, action) => {
         isGameOver: game.game_over()
     };
 };
-
-export default ReduxChess;
