@@ -51,7 +51,7 @@ const mapDispatchToProps = (dispatch) => {
 
             // only valid moves are domain events
             const game = new Chess(this.fen);
-            game.move(domainEvent.move);
+            game.move(action.move);
             if(this.fen !== game.fen()) {
                 dispatch(action)
             } else {
