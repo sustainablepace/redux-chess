@@ -1,9 +1,13 @@
 var path = require('path');
 
 module.exports = {
-  entry: './app/index.js',
+  entry: {
+    main: './app/index.js',
+    redux: './app/redux.js',
+    es: './app/es.js',
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
   },
   module: {

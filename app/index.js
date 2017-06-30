@@ -7,10 +7,6 @@ import ReactDOM from 'react-dom';
 
 /* Reducer */
 
-const initialState = {
-    fen: (new Chess()).fen() // https://de.wikipedia.org/wiki/Forsyth-Edwards-Notation
-};
-
 const reducer = (state, domainEvent) => {
     const game = new Chess(state.fen);
     if(domainEvent.type === 'pieceMoved') {
@@ -19,7 +15,11 @@ const reducer = (state, domainEvent) => {
     return {
         fen: game.fen(),
         isGameOver: game.game_over()
-    };
+    }
+};
+
+const initialState = {
+    fen: (new Chess()).fen() // https://de.wikipedia.org/wiki/Forsyth-Edwards-Notation
 };
 
 const enhancer =  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(); // redux dev tools
@@ -38,6 +38,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
+    const isMoveValid = (fen, move) => { // invariant
+        return (new Chess(fen)).move(move) !== null
+    };
+
     return {
         onMovePiece: function(piece, from, to) {
             const action = {
@@ -49,10 +53,7 @@ const mapDispatchToProps = (dispatch) => {
                 }
             };
 
-            // only valid moves are domain events
-            const game = new Chess(this.fen);
-            game.move(action.move);
-            if(this.fen !== game.fen()) {
+            if(isMoveValid(this.fen, action.move)) { // only valid moves are domain events
                 dispatch(action)
             } else {
                 console.warn('Invalid move: ' + from + ' - ' + to)
