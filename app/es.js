@@ -24,10 +24,8 @@ const currentPosition = () => {
 /* Reducer */
 
 const reducer = (state, domainEvent) => {
-    let position = currentPosition();
     return {
-        position: ChessRules.positionToString(position),
-        turn: state.turn === 'w' ? 'b' : 'w'
+        position: ChessRules.positionToString(currentPosition())
     }
 };
 
