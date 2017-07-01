@@ -8,8 +8,25 @@ import PlayerHuman from 'Modules/PlayerHuman';
 
 const store = createStore(ReduxChess, {
     b: new PlayerHuman(),
-    // b: new PlayerComputer(),
     w: new PlayerComputer()
+});
+
+store.subscribe(function() {
+    const state = store.getState();
+    console.log(state);
+    if(!state.isGameOver && state.isComputerTurn) {
+        setTimeout(() => {
+            let domainEvent = state.currentPlayer.createAction(state.fen);
+            if(domainEvent !== null && domainEvent.type === "pieceMoved" && domainEvent.move) {
+                console.log('computer player draws');
+                store.dispatch(domainEvent) // Flux = Dispatcher
+            }
+        }, 100)
+    }
+});
+
+store.dispatch({
+    type:'listenerReady'
 });
 
 ReactDOM.render(
