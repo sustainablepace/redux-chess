@@ -1,13 +1,12 @@
 import Chess from 'chess.js';
 import { createStore } from 'redux'
-import React from 'react';
 
 /* Reducer */
 
-const reducer = (state, domainEvent) => {
-    const game = new Chess(state.fen);
-    if(domainEvent.type === 'pieceMoved') {
-        game.move(domainEvent.move);
+const reducer = (state, action) => {
+    const game = new Chess(state.fen); // https://de.wikipedia.org/wiki/Forsyth-Edwards-Notation
+    if(action.type === 'MOVE_PIECE' && action.move) {
+        game.move(action.move);
     }
     return {
         fen: game.fen()
@@ -15,12 +14,27 @@ const reducer = (state, domainEvent) => {
 };
 
 const initialState = {
-    fen: (new Chess()).fen() // https://de.wikipedia.org/wiki/Forsyth-Edwards-Notation
+    fen: (new Chess()).fen()
 };
 
-const enhancer =  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(); // redux dev tools
+const store = createStore(reducer, initialState); // http://redux.js.org/docs/api/Store.html
 
-const store = createStore(reducer, initialState, enhancer);
+/* Players */
+const nextMove = () => {
+    const fen = store.getState().fen;
+    const game = new Chess(fen);
+    if(!game.game_over()) {
+        const moves = game.moves();
+        const move = moves[Math.floor(Math.random() * moves.length)];
+        setTimeout(() => {
+            store.dispatch({
+                type: 'MOVE_PIECE',
+                move: move
+            });
+        }, 50);
+    }
+};
+store.subscribe(nextMove);
 
 /* Board */
 const displayBoard = () => {
@@ -30,21 +44,6 @@ const displayBoard = () => {
 };
 store.subscribe(displayBoard);
 
-/* Players */
-const nextMove = () => {
-    const fen = store.getState().fen;
-    const game = new Chess(fen);
-    if(!game.game_over()) {
-        let moves = game.moves();
-        let move = moves[Math.floor(Math.random() * moves.length)];
-        setTimeout(() => {
-            store.dispatch({
-                type: 'pieceMoved',
-                move: move
-            });
-        }, 100);
-    }
-};
-store.subscribe(nextMove);
 
+/* Initialise */
 nextMove();
