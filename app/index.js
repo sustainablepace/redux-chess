@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import ReactChess from 'Modules/ReactChess';
 import ReduxChess from 'Modules/ReduxChess';
 import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 import PlayerComputer from 'Modules/PlayerComputer';
 import PlayerHuman from 'Modules/PlayerHuman';
+import ReactChessComputerPlayer from 'Modules/ReactChessComputerPlayer';
 
 const store = createStore(ReduxChess, {
     b: new PlayerHuman(),
@@ -17,7 +19,7 @@ store.subscribe(function() {
     if(!state.isGameOver && state.isComputerTurn) {
         setTimeout(() => {
             let domainEvent = state.currentPlayer.createAction(state.fen);
-            if(domainEvent !== null && domainEvent.type === "pieceMoved" && domainEvent.move) {
+            if(domainEvent !== null && domainEvent.type === 'pieceMoved' && domainEvent.move) {
                 console.log('computer player draws');
                 store.dispatch(domainEvent) // Flux = Dispatcher
             }
@@ -30,6 +32,8 @@ store.dispatch({
 });
 
 ReactDOM.render(
-    <ReactChess store={store} />,
+    <Provider store={store}>
+        <ReactChess />
+    </Provider>,
     document.getElementById('chessboard')
 );
