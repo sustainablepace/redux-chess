@@ -2,9 +2,8 @@ import Chess from 'chess.js';
 import { createStore } from 'redux'
 
 /* Reducer */
-
 const reducer = (state, action) => {
-    const game = new Chess(state.fen); // https://de.wikipedia.org/wiki/Forsyth-Edwards-Notation
+    const game = new Chess(state.fen);
     if(action.type === 'MOVE_PIECE' && action.move) {
         game.move(action.move);
     }
@@ -17,7 +16,7 @@ const initialState = {
     fen: (new Chess()).fen()
 };
 
-const store = createStore(reducer, initialState); // http://redux.js.org/docs/api/Store.html
+const store = createStore(reducer, initialState);
 
 /* Players */
 const nextMove = () => {
@@ -40,7 +39,7 @@ store.subscribe(nextMove);
 const displayBoard = () => {
     const fen = store.getState().fen;
     const game = new Chess(fen);
-    document.getElementById('chessboard').textContent = game.ascii()
+    document.getElementById('chess').textContent = game.ascii()
 };
 store.subscribe(displayBoard);
 

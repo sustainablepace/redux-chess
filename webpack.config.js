@@ -5,6 +5,7 @@ module.exports = {
         'index': './app/index.js',
         'redux': './app/redux.js',
         'react-redux': './app/react-redux.js',
+        'combine-reducers': './app/combine-reducers.js',
         'event-sourcing': './app/event-sourcing.js',
     },
     output: {

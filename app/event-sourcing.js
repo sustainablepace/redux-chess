@@ -29,7 +29,6 @@ const reducer = (state, domainEvent) => {
     }
 };
 
-
 const initialState = {
     position: ChessRules.getInitialPosition(),
     turn: 'w'
@@ -41,7 +40,7 @@ const store = createStore(reducer, initialState, enhancer);
 
 /* Board */
 const displayBoard = () => {
-    document.getElementById('chessboard').textContent = store.getState().position
+    document.getElementById('chess').textContent = store.getState().position
 };
 store.subscribe(displayBoard);
 

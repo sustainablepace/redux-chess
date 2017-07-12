@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 
 /* Reducer */
 
-const reducer = (state, domainEvent) => {
+const reducer = (state = { fen: (new Chess()).fen() }, domainEvent) => {
     const game = new Chess(state.fen);
     if(domainEvent.type === 'pieceMoved') {
         game.move(domainEvent.move);
@@ -18,13 +18,9 @@ const reducer = (state, domainEvent) => {
     }
 };
 
-const initialState = {
-    fen: (new Chess()).fen() // https://de.wikipedia.org/wiki/Forsyth-Edwards-Notation
-};
-
 const enhancer =  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(); // redux dev tools
 
-const store = createStore(reducer, initialState, enhancer);
+const store = createStore(reducer, enhancer);
 
 /* Container component */
 
@@ -63,9 +59,11 @@ const mapDispatchToProps = (dispatch) => {
 
 const ReactChess = connect(mapStateToProps, mapDispatchToProps)(Chessdiagram);
 
+/* Root component */
+
 ReactDOM.render(
     <Provider store={store}>
         <ReactChess/>
     </Provider>,
-    document.getElementById('chessboard')
+    document.getElementById('chess')
 );
