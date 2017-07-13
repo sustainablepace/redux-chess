@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node_modules/.bin/webpack",
-    "start": "npm run build && http-server -a localhost -p 8002"
+    "watch:build": "watch 'npm run build' app/",
+    "livereload": "live-reload --port 9091 dist/",
+    "start": "http-server -a localhost -p 8000",
+    "watch":"parallelshell 'npm run watch:build' 'npm run livereload' 'npm run start'"
   },
   "author": "Christoph Baudson",
   "license": "",

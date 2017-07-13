@@ -10,6 +10,5 @@ export default (state = {turn: 'w', timeW: 300, timeB: 300}, domainEvent) => {
             timeB: domainEvent.color === 'b' ? state.timeB - 1 : state.timeB
         });
     }
-
     return state
 }
