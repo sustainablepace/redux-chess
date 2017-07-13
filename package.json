@@ -1,12 +1,15 @@
 {
   "name": "ReduxChess",
   "version": "0.0.1",
-  "description": "A simple browser chess game with React and Redux based on the Stockfish engine.",
+  "description": "A simple browser chess game with React and Redux.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node_modules/.bin/webpack",
-    "start": "npm run build && http-server -a localhost -p 8001"
+    "watch:build": "watch 'npm run build' app/",
+    "livereload": "live-reload --port 9091 dist/",
+    "start": "http-server -a localhost -p 8000",
+    "watch":"parallelshell 'npm run watch:build' 'npm run livereload' 'npm run start'"
   },
   "author": "Christoph Baudson",
   "license": "",
@@ -16,10 +19,15 @@
     "babel-preset-env": "^1.4.0",
     "babel-preset-react": "^6.24.1",
     "http-server": "^0.9.0",
+    "live-reload": "^1.1.0",
+    "parallelshell": "^3.0.1",
+    "watch": "^1.0.2",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "chess-ai-kong": "^0.3.3",
+    "chess-rules": "^0.11.5",
     "chess.js": "^0.10.2",
     "react-chessdiagram": "^1.3.1",
     "react-redux": "^5.0.4",

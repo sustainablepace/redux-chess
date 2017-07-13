@@ -1,0 +1,14 @@
+#chess {
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 30px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+#chess .clock {
+    font-family: monospace;
+    font-size: 60px;
+    font-weight: 900;
+    margin-bottom: 40px;
+}
