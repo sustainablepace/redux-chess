@@ -1,48 +1,54 @@
-import Chess from 'chess.js';
-import { createStore } from 'redux'
-
-/* Reducer */
-const reducer = (state, action) => {
-    const game = new Chess(state.fen);
-    if(action.type === 'MOVE_PIECE' && action.move) {
-        game.move(action.move);
-    }
-    return {
-        fen: game.fen()
-    }
-};
+import Chess from 'chess.js'
+import {createStore} from 'redux'
 
 const initialState = {
-    fen: (new Chess()).fen()
+    board: (new Chess()).ascii(),
+    fen: (new Chess()).fen(),
+    moves: (new Chess()).moves(),
+    isGameOver: false
 };
 
-const store = createStore(reducer, initialState);
+const reducer = (state = initialState, action) => {
+    console.log('reducer');
+    if(action && action.type === 'movePiece' && action.move) {
+        const game = new Chess();
+        game.load(state.fen);
+        game.move(action.move);
+        return {
+            board: game.ascii(),
+            fen: game.fen(),
+            moves: game.moves(),
+            isGameOver: game.game_over()
+        }
+    }
+    return Object.assign({}, state)
+};
 
-/* Players */
-const nextMove = () => {
-    const fen = store.getState().fen;
-    const game = new Chess(fen);
-    if(!game.game_over()) {
-        const moves = game.moves();
-        const move = moves[Math.floor(Math.random() * moves.length)];
-        setTimeout(() => {
-            store.dispatch({
-                type: 'MOVE_PIECE',
-                move: move
-            });
-        }, 50);
+const store = createStore(reducer);
+
+store.subscribe(() => {
+    console.log('listener');
+    document.getElementById('chess').textContent = store.getState().board
+});
+
+
+const randomMove = (state) => {
+    const move = state.moves[Math.floor(Math.random() * state.moves.length)];
+    return {
+        type: 'movePiece',
+        move: move
     }
 };
-store.subscribe(nextMove);
 
-/* Board */
-const displayBoard = () => {
-    const fen = store.getState().fen;
-    const game = new Chess(fen);
-    document.getElementById('chess').textContent = game.ascii()
-};
-store.subscribe(displayBoard);
+store.subscribe(() => {
+    if(store.getState().isGameOver) {
+        return
+    }
+    setTimeout(() => {
+        store.dispatch(randomMove(store.getState()));
+    }, 50);
+});
 
-
-/* Initialise */
-nextMove();
+store.dispatch({
+    type: 'init'
+});

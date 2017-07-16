@@ -2,11 +2,10 @@ var path = require('path');
 
 module.exports = {
     entry: {
-        'index': './app/index.js',
+        'live': './app/live.js',
         'redux': './app/redux.js',
         'react-redux': './app/react-redux.js',
-        'combine-reducers': './app/combine-reducers.js',
-        'event-sourcing': './app/event-sourcing.js',
+        'combine-reducers': './app/combine-reducers.js'
     },
     output: {
         filename: '[name].js',
