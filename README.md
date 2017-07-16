@@ -2,7 +2,7 @@
 
 ## Slides ##
 
-tbd
+http://chess.baudson.de/dddcgn-cqrs-redux.pdf
 
 ## Run ##
 
