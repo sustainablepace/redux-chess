@@ -58,8 +58,7 @@ const mapDispatchToProps = (dispatch) => {
     };
 
     const isMoveValid = (move, fen) => {
-        const game = new Chess(fen);
-        return game.move(move) !== null
+        return (new Chess(fen)).move(move) !== null
     };
 
     const actionCreatorMovePiece = (from, to) => {
