@@ -22,7 +22,7 @@ export default connect(
     (state, ownProps) => {
         return {
             myTurn: state.clock.turn === ownProps.color,
-            isGameOver: state.board.isGameOver,
+            isGameOver: state.clock.isGameOver,
             time: ownProps.color === 'w' ? state.clock.timeW : state.clock.timeB
         }
     },

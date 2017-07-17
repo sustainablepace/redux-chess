@@ -15,6 +15,6 @@ export default (state = {fen: (new Chess()).fen()}, domainEvent) => {
         return Object.assign({}, state, {isGameOver: true})
     }
 
-    return state;
+    return Object.assign({}, state);
 };
 
