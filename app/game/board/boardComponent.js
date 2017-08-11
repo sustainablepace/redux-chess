@@ -1,6 +1,19 @@
 import Chessdiagram from 'react-chessdiagram'; // https://github.com/jniemann66/react-chessdiagram/blob/master/api.md
-import Chess from 'chess.js';
+import React from 'react';
 import {connect} from 'react-redux';
+import Chess from 'chess.js';
+
+
+/* Presentational Component */
+class MyChessdiagram extends React.Component {
+    componentDidUpdate() {
+        this.props.gameOver.call(this.props)
+    };
+
+    render() {
+        return <Chessdiagram {...this.props} />
+    }
+}
 
 const mapStateToProps = (state) => {
     return {
@@ -16,6 +29,13 @@ const mapDispatchToProps = (dispatch) => {
     };
 
     return {
+        gameOver: function() {
+            if(!this.allowMoves) {
+                dispatch({
+                    type: 'gameOver'
+                })
+            }
+        },
         onMovePiece: function (piece, from, to) {
             const move = {
                 from: from,
@@ -35,4 +55,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chessdiagram);
+export default connect(mapStateToProps, mapDispatchToProps)(MyChessdiagram);

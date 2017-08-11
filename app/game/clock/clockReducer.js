@@ -14,5 +14,8 @@ export default (state = {isGameOver: false, turn: 'w', timeW: 300, timeB: 300}, 
     if (domainEvent.type === 'timeElapsed') {
         return Object.assign({}, state, {isGameOver: true})
     }
+    if (domainEvent.type === 'gameOver') {
+        return Object.assign({}, state, {isGameOver: true})
+    }
     return Object.assign({}, state)
 }
