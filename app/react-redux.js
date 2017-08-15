@@ -1,5 +1,5 @@
 import Chess from 'chess.js'
-import {createStore, applyMiddleware} from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider, connect } from 'react-redux'
@@ -13,7 +13,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    console.log('reducer');
     if(action && action.type === 'movePiece' && action.move) {
         const game = new Chess();
         game.load(state.fen);
@@ -31,14 +30,14 @@ const reducer = (state = initialState, action) => {
 const EventStore = [];
 
 const middleware = store => dispatch => action => {
-    console.log('hello middleware');
     if(action && action.type === 'movePiece') {
         EventStore.push(action);
     }
     dispatch(action)
 };
 
-const store = createStore(reducer, applyMiddleware(middleware));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(applyMiddleware(middleware)));
 
 const mapStateToProps = (state) => {
     return {
