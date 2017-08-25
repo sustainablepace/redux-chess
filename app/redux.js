@@ -9,7 +9,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    console.log('reducer');
     if(action && action.type === 'movePiece' && action.move) {
         const game = new Chess();
         game.load(state.fen);
@@ -27,7 +26,6 @@ const reducer = (state = initialState, action) => {
 const store = createStore(reducer);
 
 store.subscribe(() => {
-    console.log('listener');
     document.getElementById('chess').textContent = store.getState().board
 });
 
